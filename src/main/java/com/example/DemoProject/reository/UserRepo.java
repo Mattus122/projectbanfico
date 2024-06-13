@@ -1,9 +1,12 @@
-package com.example.DemoProject.reo;
+package com.example.DemoProject.reository;
 
 import com.example.DemoProject.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepo extends JpaRepository<User , Long> {
+    Optional<User> findByName(String name);
 }
