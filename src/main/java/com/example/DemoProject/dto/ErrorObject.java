@@ -14,6 +14,5 @@ import java.time.OffsetDateTime;
 public class ErrorObject {
     private OffsetDateTime offsetDateTime;
     private String message;
-
     private String code;
 }

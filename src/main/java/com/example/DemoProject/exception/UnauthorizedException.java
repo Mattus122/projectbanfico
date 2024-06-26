@@ -7,7 +7,6 @@ import java.nio.file.AccessDeniedException;
 @Data
 public class UnauthorizedException extends RuntimeException {
     private String code;
-    public UnauthorizedException() {}
 
 
     public UnauthorizedException(String code ,String message) {

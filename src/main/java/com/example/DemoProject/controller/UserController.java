@@ -26,56 +26,40 @@ public class UserController {
             = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
-//    String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibWVyY2hhbnQifQ.6ug8DIW0lGyuZdIQm-kw9c70bnoV72V3R-XTQ0QYMx4";
-//    public String decodeJwt( ){
-//        String[] chunks = token.split("\\.");
-//        Base64.Decoder decoder = Base64.getUrlDecoder();
-//
-//        String header = new String(decoder.decode(chunks[0]));
-//        String payload = new String(decoder.decode(chunks[1]));
-//        return payload;
-//
-//    }
-//    String jsonObj = decodeJwt(token);
-//    if(jsonObj.getString() == "merchant"){
-//
-//    }
 
     @GetMapping("/getAllUser")
     public ResponseEntity<List<User>> getAllUsers(@RequestHeader("Authorization") String bearerToken) throws Exception {
-//        logger.info("Headers : "+ Hea("Authorization"));
-
         return userService.allusers(bearerToken , "GET");
-
-
     }
+
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<User> getBookById(@PathVariable Long id ,@RequestHeader ("Authorization") String token ) throws Exception {
         return userService.getByUserId(id , token ,"GET");
     }
 
     @Operation(
-            summary = "Retrieve a Tutorial by Id",
-            description = "Get a Tutorial object by specifying its id. The response is Tutorial object with id, title, description and published status.",
+            summary = "Retrieve a User by Id",
+            description = "Get a User object by specifying its id. The response is User object with id, name and email.",
             tags = { "tutorials", "get" })
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = User.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 
+
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user, @RequestHeader("Authorization") String token) throws Exception {
         return userService.add(user, token, "POST");
-
     }
+
     @PutMapping("/updateUserById/{id}")
     public ResponseEntity<User > updateUserById( @RequestBody User newUserData ,@PathVariable Long id , @RequestHeader("Authorization") String token)throws Exception {
         return userService.update(newUserData , id ,token,"PUT");
-
     }
+
     @DeleteMapping("/deleteUserById/{id}")
     public ResponseEntity<HttpStatus> deleteUserById(@PathVariable Long id , @RequestHeader("Authorization") String token) throws Exception {
         return userService.delete(id , token , "DELETE");
-
     }
+
 }

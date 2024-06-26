@@ -12,17 +12,6 @@ import java.time.OffsetDateTime;
 
 @ControllerAdvice
 public class ErrorHandler {
-//    @ExceptionHandler(UnauthorizedException.class)
-//    public ResponseEntity<ErrorObject> Excetion1(UnauthorizedException e){
-//        ErrorObject er= ErrorObject.builder().offsetDateTime(OffsetDateTime.now()).message("Unauthorized Access").build();
-//
-//        return new ResponseEntity<>(er , HttpStatus.UNAUTHORIZED);
-//    }
-//        @ExceptionHandler(ConflictException.class)
-//        public ResponseEntity<ErrorObject> Exception2(ConflictException e){
-//            ErrorObject er = ErrorObject.builder().offsetDateTime(OffsetDateTime.now()).message("Role Not Found").build();
-//            return new ResponseEntity<>(er , HttpStatus.CONFLICT);
-//        }
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorObject> Exception3(UnauthorizedException e){
         ErrorObject er = ErrorObject.builder().offsetDateTime(OffsetDateTime.now()).message("Role Mismatch").code(e.getCode()).build();
