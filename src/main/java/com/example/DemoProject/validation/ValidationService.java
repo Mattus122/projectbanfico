@@ -1,6 +1,7 @@
 package com.example.DemoProject.validation;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.DemoProject.exception.InvalidRoleException;
+import com.example.DemoProject.exception.UnauthorizedException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -21,28 +22,27 @@ public class ValidationService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
         log.info("Role: " + jsonNode.get("role"));
+        log.info("RequestType :" +requestType);
 
-        if(jsonNode.get("role") != null) {
-            if (requestType.equals("POST") || requestType.equals("PUT")) {
-                if (!jsonNode.get("role").asText().equals("merchant")) {
-                    throw new Exception("Role mismatch");
-                }
+        if (jsonNode.get("role").asText().equals("merchant")||jsonNode.get("role").asText().equals("admin")||jsonNode.get("role").asText().equals("consumer") ){
+            log.info("Valid Role" + jsonNode.get("role").asText());
+        } else throw new InvalidRoleException("400" , "Invalid role: " + jsonNode.get("role").asText());
+
+            if(jsonNode.get("role").asText() .equals( "merchant") && requestType.equals("POST")){
+                return true;
             }
-        }
-        if(jsonNode.get("role") != null){
-            if(requestType.equals("DELETE")){
-                if(!jsonNode.get("role").asText().equals("admin")){
-                    throw new Exception("Role Mismatch");
-                }
+            else if(jsonNode.get("role").asText().equals("merchant") && requestType.equals("PUT")){
+                return true;
             }
-        }
-        if(jsonNode.get("role") != null){
-            if(requestType.equals("GET")){
-                if(!jsonNode.get("role").asText().equals("customer")){
-                    throw new Exception("Role Mismatch");
-                }
+            else if (jsonNode.get("role").asText().equals("admin") && requestType.equals("DELETE")){
+                return true;
             }
-        }
-        return false;
+            else if (jsonNode.get("role").asText().equals("consumer") && requestType.equals("GET")){
+                return true;
+            }
+
+        throw new UnauthorizedException( "403" , "Access Denied ");
+
+
     }
 }
