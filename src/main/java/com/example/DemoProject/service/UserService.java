@@ -24,31 +24,18 @@ public class UserService {
     ValidationService validationService;
 
     public ResponseEntity<List<User>> allusers(String token , String requestType) throws Exception {
-//        SecurityContextHolder.getContext().getAuthentication() //this method gets u current authenticated user
-        //call vsalidation
-        if (validationService. validaeteroles(token,requestType) == true){
-            try {
+            validationService. validaeteroles(token,requestType);
                 List<User> userlist = new ArrayList<User>();
                 userRepo.findAll().forEach(userlist::add);
-//            for (User u : userRepo.findAll()) {
-//                userlist.add(u);
-//            }
                 if(userlist.isEmpty()){
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
-                return new ResponseEntity<>(userlist,HttpStatus.ACCEPTED);
-
-            }
-            catch (Exception ex){
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        }
-        throw new UnauthorizedException("403" , "Invalid Role");
+                return new ResponseEntity<>(userlist,HttpStatus.OK);
 
     }
 
     public ResponseEntity<User> getByUserId(Long id, String token , String requestType) throws Exception {
-        if (validationService.validaeteroles(token , requestType)== true){
+            validationService.validaeteroles(token , requestType);
             Optional<User> userdata  = userRepo.findById(id);
             if (userdata.isPresent()){
                 return new ResponseEntity<>(userdata.get(), HttpStatus.OK);
@@ -56,16 +43,13 @@ public class UserService {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        }
-        throw new UnauthorizedException("403" , "Invalid Role");
 
     }
 
     public ResponseEntity<User> add(User user, String token, String requestType) throws Exception {
       validationService.validaeteroles(token, requestType);
-
-          User obj = userRepo.save(user);
-          return new ResponseEntity<>(user , HttpStatus.CREATED);
+      User obj = userRepo.save(user);
+      return new ResponseEntity<>(user , HttpStatus.CREATED);
 
 
 
