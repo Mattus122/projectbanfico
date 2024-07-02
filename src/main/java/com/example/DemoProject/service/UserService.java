@@ -1,5 +1,6 @@
 package com.example.DemoProject.service;
 
+import com.example.DemoProject.exception.StudentNotFoundException;
 import com.example.DemoProject.exception.UnauthorizedException;
 import com.example.DemoProject.model.User;
 import com.example.DemoProject.reository.UserRepo;
@@ -35,6 +36,9 @@ public class UserService {
     }
 
     public ResponseEntity<User> getByUserId(Long id, String token , String requestType) throws Exception {
+        if (id <0 ){
+            throw new StudentNotFoundException("Student id cannot be negative" , "400");
+        }
             validationService.validaeteroles(token , requestType);
             Optional<User> userdata  = userRepo.findById(id);
             if (userdata.isPresent()){
@@ -83,5 +87,10 @@ public class UserService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 
+    }
+
+
+    public Optional<User> getUserByName(String name) {
+        return userRepo.findByName(name);
     }
 }
