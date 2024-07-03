@@ -15,10 +15,7 @@ public class ValidationService {
     public boolean validaeteroles(String token, String requestType) throws Exception {
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
-
-//        String header = new String(decoder.decode(chunks[0]));
         String payload = new String(decoder.decode(chunks[1]));
-
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
         log.info("Role: " + jsonNode.get("role"));
